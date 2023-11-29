@@ -16,8 +16,9 @@ public final class DrawNumberImpl implements DrawNumber {
 
     /**
      * @throws IllegalStateException if the configuration is not consistent
+     * @param conf the configuration from which taking the values
      */
-    public DrawNumberImpl(final Configuration conf) throws IllegalStateException{
+    public DrawNumberImpl(final Configuration conf) throws IllegalStateException {
         if (!conf.isConsistent()) {
             throw new IllegalStateException("Configuration not consistent");
         }

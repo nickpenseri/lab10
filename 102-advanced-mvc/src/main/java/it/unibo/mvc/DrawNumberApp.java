@@ -51,7 +51,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
 
     private static Configuration.Builder initializeConstants() throws IOException {
         final Configuration.Builder cf = new Configuration.Builder();
-        try (final BufferedReader sr = new BufferedReader(
+        try (BufferedReader sr = new BufferedReader(
             new InputStreamReader(
                 ClassLoader.getSystemResourceAsStream("config.yml")
             )
