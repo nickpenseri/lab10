@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int LINES = 3;
     private static final String HOME = System.getProperty("user.home");
     private static final String SEPARATOR = System.getProperty("file.separator");
     private static final String FILE_OUTPUT = HOME + SEPARATOR + "Output.txt";
@@ -33,7 +32,6 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
             view.start();
         }
         Configuration.Builder cb = new Configuration.Builder();
-         new Configuration.Builder().build();
         try {
             cb = initializeConstants();
         } catch (IOException e) {
@@ -45,6 +43,9 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
         if (fileConf.isConsistent()) {
             this.model = new DrawNumberImpl(fileConf);
         } else {
+            for (var v : this.views) {
+                v.displayError("Invalid configuration, going with default");
+            }
             this.model = new DrawNumberImpl(new Configuration.Builder().build());
         }
     }
@@ -56,8 +57,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
                 ClassLoader.getSystemResourceAsStream("config.yml")
             )
         )) {
-            for (int i = 0; i < LINES; i++) {
-                String line = sr.readLine();
+            for (String line = sr.readLine(); line != null; line = sr.readLine()) {
                 if (line.contains("minimum")) {
                     cf.setMin(Integer.parseInt(getLastWord(line)));
                 } else if (line.contains("maximum")) {
@@ -72,7 +72,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
 
     private static String getLastWord(final String line) {
         final var tknzr = new StringTokenizer(line);
-        String lastWord = new String();
+        String lastWord = "";
         while (tknzr.hasMoreTokens()) {
             lastWord = tknzr.nextToken();
         }
